@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+
+    <style>
+        body{
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+           
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1{
+            color: tomato;
+            text-align: center;
+            font-size: xx-large;
+            font-weight: 900;
+            font-style: italic;
+            /* justify-content: center; */
+            
+        }
+        form{
+           padding: 20px;
+           padding-bottom: 20px;
+           text-align: center;
+           background: #fff;
+           border: 1px solid #ddd;
+           border-radius: 8px;
+           box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+           width: 60%;
+           margin: 0 auto 20px auto;
+        }
+        form label{
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: #555;
+        }
+        form input[type="text"] {
+            width:80%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        form button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: tomato;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        form button:hover {
+            background-color: #e65c2f;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        table thead {
+            background-color: #ff6347;
+            color: #fff;
+        }
+        table th, table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        table th {
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        p {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        div {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>URL SHORTENER</h1>
+    
+    <% if(locals.id) { %>  
+        <p> URL Generated:  http://localhost:8000/url/<%= id %> </p>
+         <%}  %>
+   <div>
+    <form  method="POST" action="/url">
+        <label >Enter Your Original URL</label>
+        <input type="text" name="url"  placeholder="https://example.com" />
+        <button type="submit">Generate</button>
+
+    </form>
+   </div>
+   <div>
+      <% if (locals.urls) { %>
+        <table>
+            <thead>
+                <th>S. No</th>
+                <th>ShortID</th>
+                <th>Redirect</th>
+                <th>Clicks</th>
+            </thead>
+            <tbody>
+                <% urls.forEach((url, index) => {  %>
+                    <tr>
+                    <td><%= index +1 %></td>
+                    <td><%= url.shortId %></td>
+                    <td><%= url.redirectURL %></td>
+                    <td><%= url.visitHistory.length %></td>
+                </tr>
+               <%  }) %>
+            </tbody>
+        </table>
+      <% } %>
+   </div>
+</body>
+</html>
