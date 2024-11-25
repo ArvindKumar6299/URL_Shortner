@@ -3,7 +3,7 @@ const path = require("path");
 const connectDb = require("./connection");
 const URL = require("./models/url");
 const cookieParser = require("cookie-parser");
-const {restrictToLoggedinUserOnly , checkAuth} = require("./middlewares/auth")
+const {checkForAuthentication , restrictTo} = require("./middlewares/auth")
 
 const staticRoute = require("./routes/staticRouter");
 const  urlRoute = require("./routes/url")
@@ -18,6 +18,7 @@ connectDb("mongodb://localhost:27017/short-url")
 app.use(express.json());  //middleware to parse incoming body
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
+app.use(checkForAuthentication);
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"))
@@ -29,8 +30,8 @@ app.set("views", path.resolve("./views"))
 //     })
 // });
 
-app.use("/url",restrictToLoggedinUserOnly, urlRoute);
-app.use("/", checkAuth,staticRoute);
+app.use("/url",restrictTo(["NORMAL" , "ADMIN"]), urlRoute);    //restrictTo(["NORMAL"]) ensures that only users with the role "NORMAL" can access the route. 
+app.use("/",staticRoute);
 app.use("/user", userRoute);
 
 
